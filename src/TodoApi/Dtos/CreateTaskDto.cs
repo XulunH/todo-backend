@@ -4,8 +4,14 @@ namespace TodoApi.Dtos;
 
 public class CreateTaskDto
 {   
+    private string _taskDescription = "";
+
     [Required]
-    public string TaskDescription { get; set; } = "";
+    public string TaskDescription
+    {
+        get => _taskDescription;
+        set => _taskDescription = value?.Trim() ?? "";
+    }
 
     [Required]
     public DateTime? DueDate { get; set;}

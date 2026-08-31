@@ -10,7 +10,13 @@ public class UpdateTaskDto
     [Required]
     public DateTime? DueDate { get; set;}
 
+    private string _taskDescription = "";
+
     [Required]
-    public string TaskDescription { get; set; } = "";
+    public string TaskDescription
+    {
+        get => _taskDescription;
+        set => _taskDescription = value?.Trim() ?? "";
+    }
     public bool Completed {get; set;}
 }
