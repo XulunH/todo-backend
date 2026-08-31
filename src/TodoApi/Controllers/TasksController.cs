@@ -38,9 +38,14 @@ public class TasksController : ControllerBase
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateTaskDto dto)
     {
-        var updated = await _service.UpdateAsync(id,dto);
-        return updated is null ? NotFound(NotFoundMessage(id)) : Ok(updated);
+        if (dto.Id != Guid.Empty && dto.Id != id)
+            return BadRequest(new ErrorResponse
+            {
+                Message = "The id in the request body does not match the id in the URL."
+            });
 
+        var updated = await _service.UpdateAsync(id, dto);
+        return updated is null ? NotFound(NotFoundMessage(id)) : Ok(updated);
     }
 
     [HttpDelete("{id:guid}")]

@@ -67,7 +67,7 @@ public class TaskService : ITaskService
             Id = Guid.NewGuid(),
             TaskDescription = dto.TaskDescription,
             CreatedDate = DateTime.UtcNow,
-            DueDate = dto.DueDate,
+            DueDate = dto.DueDate!.Value, //api controller already validates this
             Completed = dto.Completed
 
         };
@@ -83,7 +83,7 @@ public class TaskService : ITaskService
         if (item is null) return null;
 
         item.TaskDescription = dto.TaskDescription;
-        item.DueDate = dto.DueDate;
+        item.DueDate = dto.DueDate!.Value; //api controller already validates this
         item.Completed = dto.Completed;
 
         await _db.SaveChangesAsync();
