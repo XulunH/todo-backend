@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TodoApi.Data;
 using TodoApi.Services;
 using TodoApi.Dtos;
+using TodoApi.Json;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 //make every 4xx code into one format
 builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.Converters.Add(new UtcDateTimeConverter()))
     .ConfigureApiBehaviorOptions(options =>
     {
         options.InvalidModelStateResponseFactory = context =>
@@ -50,7 +53,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 //app.UseAuthorization();  //currently no need
 
